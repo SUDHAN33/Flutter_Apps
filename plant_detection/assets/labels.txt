@@ -1,0 +1,17 @@
+0 Tanduliya
+1 Malabar Spinach
+2 Betel
+3 Hibiscus
+4 Indian Beech
+5 Karanda
+6 Mexican Mint
+7 Indian Mint
+8 Blue Ginger
+9 Tulsi
+10 Neem
+11 Indian Mustard
+12 Peepal Leaf
+13 Drumstick Leaf
+14 Curry Leaf
+15 Parijata
+16 Retake The Image

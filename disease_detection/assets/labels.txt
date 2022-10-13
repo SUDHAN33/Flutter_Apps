@@ -1,0 +1,10 @@
+0 Blueberry_healthy
+1 Orange_Haunglongbing_(Citrus_greening)
+2 Peach_Bacterial_Spot
+3 Peach_healthy
+4 Pepper_Bell_Bacterialspot
+5 Pepper_Bell_Healthy
+6 Retake the image
+7 Raspbery_healthy
+8 Soyabean_healthy
+9 Squash_Powdery_mildew
