@@ -1,2 +1,2 @@
 # Flutter_Apps
-This repository consist of  application developed by using flutter
+This repository consist of  applications which are developed using flutter
