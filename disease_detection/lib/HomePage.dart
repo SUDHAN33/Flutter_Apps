@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'dart:async';
+import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
@@ -10,8 +13,12 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+  late Animation<double> _angleAnimation;
+  late Animation<double> _scaleAnimation;
+  late AnimationController _controller;
   bool loading = true;
+  bool _loadingInProgress = true;
   late File _image;
   late List? _output;
   late String url;
@@ -21,8 +28,50 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _loadingInProgress = true;
+    _controller = new AnimationController(
+        duration: const Duration(milliseconds: 2000), vsync: this);
+    _angleAnimation = new Tween(begin: 0.0, end: 360.0).animate(_controller)
+      ..addListener(() {
+        setState(() {
+          // the state that has changed here is the animation object’s value
+        });
+      });
+    _scaleAnimation = new Tween(begin: 1.0, end: 6.0).animate(_controller)
+      ..addListener(() {
+        setState(() {
+          // the state that has changed here is the animation object’s value
+        });
+      });
+
+    _angleAnimation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        if (_loadingInProgress) {
+          _controller.reverse();
+        }
+      } else if (status == AnimationStatus.dismissed) {
+        if (_loadingInProgress) {
+          _controller.forward();
+        }
+      }
+    });
+
+    _controller.forward();
+    _loadData();
     loadmodel().then((value) {
       setState(() {});
+    });
+
+  }
+
+  Future _loadData() async {
+    await new Future.delayed(new Duration(seconds: 5));
+    _dataLoaded();
+  }
+
+  void _dataLoaded() {
+    setState(() {
+      _loadingInProgress = false;
     });
   }
 
@@ -50,6 +99,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
+    _controller.dispose();
     super.dispose();
   }
 
@@ -75,300 +125,192 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var h = MediaQuery.of(context).size.height;
-    var w = MediaQuery.of(context).size.width;
+    var h = MediaQuery
+        .of(context)
+        .size
+        .height;
+    var w = MediaQuery
+        .of(context)
+        .size
+        .width;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 66, 98, 3),
-        title: Text(
-          'FLORA AUXILIATOR',
+        appBar: AppBar(
+          backgroundColor: Colors.lightGreen,
+          title: Text(
+            'Tumor Classifier',
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-      child: Container(
-        // decoration: BoxDecoration(
-        //   image: DecorationImage(
-        //     image: AssetImage('assets/appbackground.jpg'),
-        //     opacity: 0.7,
-        //     fit: BoxFit.cover,
-        //   ),
-        // ),
-        height: h,
-        width: w,
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 10),
-            // CircleAvatar(
-            //   radius: 60,
-            //   backgroundImage: AssetImage('assets/avatar.jpg'),
-            // ),
-            SizedBox(height: 10),
-            Container(
-                child: Text(' Upload The Picture ',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 66, 98, 3),
-                    ))),
-            SizedBox(height: 20),
-            Container(
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    height: 50,
-                    width: double.infinity,
-                    child: RaisedButton(
-                        color:Color.fromARGB(255, 66, 98, 3),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Row(children: <Widget>[
-                          Icon(
-                            Icons.camera_alt_outlined,
-                            color: Colors.white,
-                            size: 40,
-                          ),
-                          SizedBox(
-                            width: 100,
-                          ),
-                          Text('Capture',
-                              style: TextStyle(
-                                fontSize: 22,
-                                color: Colors.white,
-                              )),
-                        ]),
-                        onPressed: () {
-                          pickimage_camera();
-                        }),
-                  ),
-                  SizedBox(height: 20),
-                   CircleAvatar(
-              radius: 60,
-              backgroundImage: AssetImage('assets/avatar.jpg'),
-            ),
-                  SizedBox(height: 20),
-                  Container(
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    height: 50,
-                    width: double.infinity,
-                    child: RaisedButton(
-                        color:Color.fromARGB(255, 66, 98, 3),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Row(children: <Widget>[
-                          Icon(
-                            Icons.photo_album,
-                            color: Colors.white,
-                            size: 40,
-                          ),
-                          SizedBox(
-                            width: 100,
-                          ),
-                          Text('Gallery',
-                              style: TextStyle(
-                                fontSize: 22,
-                                color: Colors.white,
-                              )),
-                        ]),
-                        onPressed: () {
-                          pickimage_gallery();
-                        }),
-                  ),
-                ],
+        body:
+        _loadingInProgress ?
+        Center(
+          child: _buildAnimation(),
+        ) :
+        SingleChildScrollView(
+          child: Card(
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/appbackground.jpg'),
+                  opacity: 0.7,
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-            loading != true
-                ? Container(
+              height: 1000,
+              width: w,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 10),
+                  Container(
+                      child: Text(' Lets check here ',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ))),
+                  SizedBox(height: 20),
+                  Container(
+                    child: Column(
+                      children: [
+
+                        Container(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          height: 50,
+                          width: double.infinity,
+                          child: RaisedButton(
+                              color: Colors.lightGreen,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Row(children: <Widget>[
+                                Icon(
+                                  Icons.camera,
+                                  size: 40,
+                                ),
+                                SizedBox(
+                                  width: 100,
+                                ),
+                                Text('CAPTURE',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                    )),
+                              ]),
+                              onPressed: () {
+                                pickimage_camera();
+                              }),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          height: 50,
+                          width: double.infinity,
+                          child: RaisedButton(
+                              color: Colors.lightGreen,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Row(children: <Widget>[
+                                Icon(
+                                  Icons.image,
+                                  size: 40,//
+                                ),
+                                SizedBox(
+                                  width: 100,
+                                ),
+                                Text('GALLERY',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+
+                                      fontSize: 22,
+                                    )),
+                              ]),
+                              onPressed: () {
+                                pickimage_gallery();
+                              }),
+                        ),
+                      ],
+                    ),
+                  ),
+                  loading != true
+                      ?
+                  Container(
                     child: Column(
                       children: <Widget>[
                         Container(
                           height: 180,
                           padding: EdgeInsets.all(15),
-                          child: Image.file(_image),
+                          child:
+                          Image.file(_image),
                         ),
                         _output != null
                             ? Text(a.Find(_output),
-                                style: TextStyle(
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
-                                ))
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ))
                             : Text(''),
                         _output != null
                             ? a.show(_output)?
-                            Text(
-                                "Botanical Name : " + a.BotanicalName(_output),
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
-                                ))
+                        Text(
+                            "",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ))
                             : Text('')
                             : Text(''),
-                            a.show(_output)?
-                        Column(children: <Widget>[
-                          Text(
-                            "USES",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                          _output != null
-                              ? Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.all(5),
-                                    ),
-                                    Text(
-                                      '\u2022',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        height: 1.55,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        child: Text(
-                                          a.Uses1(_output),
-                                          textAlign: TextAlign.left,
-                                          softWrap: true,
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.black,
-                                            height: 1.55,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Text(""),
-                          _output != null
-                              ? Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                     Container(
-                                      margin: EdgeInsets.all(5),
-                                    ),
-                                    Text(
-                                      '\u2022',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        height: 1.55,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        child: Text(
-                                          a.Uses2(_output),
-                                          textAlign: TextAlign.left,
-                                          softWrap: true,
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.black,
-                                            height: 1.55,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Text(""),
-                        ]):Text(""),
-                        a.show(_output)?
-                         GestureDetector(
-                            child: Text("  Click here for more info",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    decoration: TextDecoration.underline,
-                                    color: Color.fromARGB(255, 66, 98, 3))),
-                            onTap: () async {
-                              url = a.Uses(_output);
-                              if (await canLaunchUrl(Uri.parse(url))) {
-                                launch(url);
-                              }
-                            },
-                          ):Text(""),
-                        a.show(_output)?
-                        Column(
-                          children: <Widget>[
-                            Text(
-                            "REMEDY",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                            _output != null
-                              ? Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                     Container(
-                                      margin: EdgeInsets.all(5),
-                                    ),
-                                    Text(
-                                      '\u2022',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        height: 1.55,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        child: Text(
-                                          a.Remedy(_output),
-                                          textAlign: TextAlign.left,
-                                          softWrap: true,
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.black,
-                                            height: 1.55,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Text(""),
-                          ],
-                        ):Text(""),
-                        a.show(_output) ?
-                         GestureDetector(
-                            child: Text(" Click here for more info",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    decoration: TextDecoration.underline,
-                                    color: Color.fromARGB(255, 66, 98, 3))),
-                            onTap: () async {
-                              url = a.Remed(_output);
-                              if (await canLaunchUrl(Uri.parse(url))) {
-                                launch(url);
-                              }
-                            },
-                          )
-                          :Text(""),
+
                       ],
                     ),
                   )
-                : Container()
-          ],
-        ),
+                      : Container()
+                ],
+              ),
+            ),
+          ),
+        ));
+  }
+
+  Widget _buildAnimation() {
+    double circleWidth = 10.0 * _scaleAnimation.value;
+    Widget circles = new Container(
+      width: circleWidth * 2.0,
+      height: circleWidth * 2.0,
+      child: new Column(
+        children: <Widget>[
+          new Row (
+            children: <Widget>[
+              _buildCircle(circleWidth,Colors.blue),
+              _buildCircle(circleWidth,Colors.red),
+            ],
+          ),
+          new Row (
+            children: <Widget>[
+              _buildCircle(circleWidth,Colors.yellow),
+              _buildCircle(circleWidth,Colors.green),
+            ],
+          ),
+        ],
       ),
-    ));
+    );
+    //_loadingInProgress = true;
+    double angleInDegrees = _angleAnimation.value;
+    return new Transform.rotate(
+      angle: angleInDegrees / 360 * 2 * 3.14,
+      child: new Container(
+        child: circles,
+      )
+      ,
+    );
+  }
+
+  Widget _buildCircle(double circleWidth, Color color) {
+    return new Container(
+      width: circleWidth,
+      height: circleWidth,
+      decoration: new BoxDecoration(
+        color: color,
+        shape: BoxShape.circle,
+      ),
+    );
   }
 }

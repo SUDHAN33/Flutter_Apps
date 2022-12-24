@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
@@ -145,7 +146,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           child: _buildAnimation(),
         ) :
         SingleChildScrollView(
-          child: Container(
+          child: Card(
+             child: Container(
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/appbackground.jpg'),
@@ -153,7 +155,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 fit: BoxFit.cover,
               ),
             ),
-            height: h,
+            height: 1000,
             width: w,
             child: Column(
               children: <Widget>[
@@ -191,6 +193,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                 width: 100,
                               ),
                               Text('CAPTURE',
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 22,
                                   )),
@@ -217,7 +220,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                 width: 100,
                               ),
                               Text('GALLERY',
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
+
                                     fontSize: 22,
                                   )),
                             ]),
@@ -357,6 +362,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     : Container()
               ],
             ),
+          ),
           ),
         ));
   }

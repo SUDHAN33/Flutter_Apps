@@ -1,0 +1,10 @@
+0 Black Sea Sprat
+1 Gilt-Head Bream
+2 Hourse Mackerel
+3 random_images
+4 Red Mullet
+5 Red Sea Bream
+6 Sea Bass
+7 Shrimp
+8 Striped Red Mullet
+9 Trout

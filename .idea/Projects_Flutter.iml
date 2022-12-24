@@ -85,6 +85,30 @@
       <excludeFolder url="file://$MODULE_DIR$/plant_detection/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/example/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/plant_detection/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/example/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/plant_detection/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/tumor_detection/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/tumor_detection/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/tumor_detection/build" />
+      <excludeFolder url="file://$MODULE_DIR$/tumor_detection/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/tumor_detection/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/tumor_detection/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/tumor_detection/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/tumor_detection/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/tumor_detection/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/build" />
+      <excludeFolder url="file://$MODULE_DIR$/fish_detection/build" />
+      <excludeFolder url="file://$MODULE_DIR$/fish_detection/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/fish_detection/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/fish_detection/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/fish_detection/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/fish_detection/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/fish_detection/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/fish_detection/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/fish_detection/windows/flutter/ephemeral/.plugin_symlinks/url_launcher_windows/build" />
+      <excludeFolder url="file://$MODULE_DIR$/patient_app/build" />
+      <excludeFolder url="file://$MODULE_DIR$/patient_app/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/patient_app/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/patients_hospital/build" />
+      <excludeFolder url="file://$MODULE_DIR$/patients_hospital/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/patients_hospital/.pub" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 32 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
