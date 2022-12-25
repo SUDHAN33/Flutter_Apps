@@ -115,6 +115,9 @@
       <excludeFolder url="file://$MODULE_DIR$/patients_hospital/windows/flutter/ephemeral/.plugin_symlinks/geolocator_windows/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/patients_hospital/windows/flutter/ephemeral/.plugin_symlinks/geolocator_windows/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/patients_hospital/windows/flutter/ephemeral/.plugin_symlinks/geolocator_windows/build" />
+      <excludeFolder url="file://$MODULE_DIR$/app/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/app/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/app/build" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 32 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
